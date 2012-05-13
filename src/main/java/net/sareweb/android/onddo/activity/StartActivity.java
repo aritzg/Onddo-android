@@ -45,10 +45,11 @@ public class StartActivity extends Activity {
 		
 		if(accounts!=null){
 		
-			final CharSequence[] items = new CharSequence[accounts.length];
+			final CharSequence[] items = new CharSequence[accounts.length + 1];
 			for (int i = 0; i < accounts.length; i++) {
 				items[i]=((Account)accounts[i]).name;
 			}
+			items[accounts.length]="Other";
 	
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("Choose account");
@@ -63,10 +64,13 @@ public class StartActivity extends Activity {
 	}
 	
 	private void goToLogIn(String emailAddress){
-		LogInActivity_.intent(this).emailAddress(emailAddress).start(); 
+		String mail = emailAddress;
+		if(emailAddress.equals(other))mail="";
+		LogInActivity_.intent(this).emailAddress(mail).start(); 
 	}
 
 	
+	private String other ="Other";
 	private static String TAG = "StartActivity";
 
 }
