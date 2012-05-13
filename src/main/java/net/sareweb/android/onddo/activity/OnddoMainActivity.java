@@ -34,7 +34,7 @@ public class OnddoMainActivity extends TabActivity {
 		userPrefs = getSharedPreferences(OnddoConstants.USER_PREFS, MODE_PRIVATE);
 		
 		Resources res = getResources();
-		TabHost tabHost = getTabHost();
+		tabHost = getTabHost();
 	    TabHost.TabSpec spec;
 		
 		spec = tabHost.newTabSpec("pickings").setIndicator("Pickings",
@@ -59,6 +59,7 @@ public class OnddoMainActivity extends TabActivity {
 	 @OptionsItem(R.id.itemSynch)
 	 void itemSynch(){
 		 appManager.synchronize(userPrefs.getLong(OnddoConstants.USER_PREFS_USER_ID, 0), this);
+		 tabHost.setCurrentTab(0);
 	 }
 	 
 	 @OptionsItem(R.id.itemExit)
@@ -69,6 +70,7 @@ public class OnddoMainActivity extends TabActivity {
 	 }
 	 
 	 SharedPreferences userPrefs;
+	 TabHost tabHost;
 	 private static String TAG = "OnddoMainActivity";
 	 @Bean
 	 AppManager appManager;
