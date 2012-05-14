@@ -29,7 +29,6 @@ public class LogInActivity extends Activity {
 		setContentView(R.layout.login);
 		txEmail.setText(emailAddress);
 		userPrefs = getSharedPreferences(OnddoConstants.USER_PREFS, MODE_PRIVATE);
-
 	}
 
 	@Click(R.id.btnLogIn)

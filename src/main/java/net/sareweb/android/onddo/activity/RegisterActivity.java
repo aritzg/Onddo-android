@@ -7,6 +7,7 @@ import net.sareweb.lifedroid.model.User;
 import net.sareweb.lifedroid.util.LDConstants;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -27,6 +28,7 @@ public class RegisterActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		userRestService = new UserRESTService(OnddoConstants.DEFAULT_USER, OnddoConstants.DEFAULT_PASS);
+		userPrefs = getSharedPreferences(OnddoConstants.USER_PREFS, MODE_PRIVATE);
 		setContentView(R.layout.register);
 		txEmail.setText(emailAddress);
 	}
@@ -74,7 +76,10 @@ public class RegisterActivity extends Activity {
 								null, 
 								true);
 		
-		if(u!=null)createUserResult(REGISTER_OK);
+		if(u!=null){
+			loginUser(u);
+			createUserResult(REGISTER_OK);
+		}
 		
 	}
 	
@@ -89,10 +94,21 @@ public class RegisterActivity extends Activity {
 		case REGISTER_OK:
 			Toast.makeText(this, "User registered", Toast.LENGTH_LONG).show();
 			dialog.cancel();
+			finish();
+			OnddoMainActivity_.intent(this).start();
 			break;
 		default:
 			break;
 		}
+	}
+	
+	private void loginUser(User user){
+		SharedPreferences.Editor editor = userPrefs.edit();
+		editor.putLong(OnddoConstants.USER_PREFS_USER_ID, user.getUserId());
+		editor.putString(OnddoConstants.USER_PREFS_NAME, user.getScreenName());
+		editor.putString(OnddoConstants.USER_PREFS_EMAIL_ADDRESS, user.getEmailAddress());
+		editor.putString(OnddoConstants.USER_PREFS_PASS, txPass.getText().toString());
+		editor.commit();
 	}
 	
 	@ViewById
@@ -109,6 +125,7 @@ public class RegisterActivity extends Activity {
 	@Extra(OnddoConstants.PARAM_EMAIL_ADDRESS)
 	String emailAddress;
 	private ProgressDialog dialog;
+	private SharedPreferences userPrefs;
 	private UserRESTService userRestService;
 	private static String TAG = "RegisterActivity";
 	
