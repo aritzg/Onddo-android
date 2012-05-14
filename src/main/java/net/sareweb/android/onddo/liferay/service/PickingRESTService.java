@@ -1,11 +1,14 @@
 package net.sareweb.android.onddo.liferay.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.lifedroid.liferay.service.generic.LDRESTService;
 
+import org.apache.commons.lang.CharSet;
 import org.springframework.http.HttpMethod;
 
 import android.util.Log;
@@ -30,7 +33,13 @@ public class PickingRESTService extends LDRESTService<Picking> {
 		requestURL = addParamToRequestURL(requestURL, "userId", picking.getUserId());
 		requestURL = addParamToRequestURL(requestURL, "createDate", picking.getCreateDate());
 		requestURL = addParamToRequestURL(requestURL, "modifiedDate", picking.getModifiedDate());
-		requestURL = addParamToRequestURL(requestURL, "type", picking.getType());
+		String encodedText ="";
+		try {
+			encodedText = URLEncoder.encode(picking.getType(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, "Error encoding text", e);
+		}
+		requestURL = addParamToRequestURL(requestURL, "type", encodedText);
 		requestURL = addParamToRequestURL(requestURL, "lat", picking.getLat());
 		requestURL = addParamToRequestURL(requestURL, "lng", picking.getLng());
 		requestURL = addParamToRequestURL(requestURL, "moonPhase", picking.getMoonPhase());
@@ -50,7 +59,13 @@ public class PickingRESTService extends LDRESTService<Picking> {
 		Log.d(TAG, "picking.getCreateDate()" + picking.getCreateDate());
 		requestURL = addParamToRequestURL(requestURL, "createDate", picking.getCreateDate());
 		requestURL = addParamToRequestURL(requestURL, "modifiedDate", picking.getModifiedDate());
-		requestURL = addParamToRequestURL(requestURL, "type", picking.getType());
+		String encodedText ="";
+		try {
+			encodedText = URLEncoder.encode(picking.getType(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, "Error encoding text", e);
+		}
+		requestURL = addParamToRequestURL(requestURL, "type", encodedText);
 		requestURL = addParamToRequestURL(requestURL, "lat", picking.getLat());
 		requestURL = addParamToRequestURL(requestURL, "lng", picking.getLng());
 		requestURL = addParamToRequestURL(requestURL, "moonPhase", picking.getMoonPhase());
