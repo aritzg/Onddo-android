@@ -69,7 +69,7 @@ public class LogInActivity extends Activity {
 	
 	@Click(R.id.btnRegister)
 	void clickBtnRegister() {
-		RegisterActivity_.intent(this).start();
+		RegisterActivity_.intent(this).emailAddress(txEmail.getText().toString()).start();
 	}
 
 	
