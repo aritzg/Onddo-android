@@ -3,16 +3,20 @@ package net.sareweb.android.onddo.activity;
 import net.sareweb.android.onddo.R;
 import net.sareweb.android.onddo.manager.AppManager;
 import net.sareweb.android.onddo.util.OnddoConstants;
+import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.widget.TabHost;
+import android.widget.Toast;
 
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Bean;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
+import com.googlecode.androidannotations.annotations.UiThread;
 
 @EActivity
 @OptionsMenu(value = R.menu.onddo_menu)
@@ -43,16 +47,39 @@ public class OnddoMainActivity extends TabActivity {
 	}
 	
 
-	 @OptionsItem(R.id.itemAdd)
-	 void itemAdd(){
-		 PickingEditActivity_.intent(this).pickingId(0).start();
-	 }
+	@OptionsItem(R.id.itemAdd)
+	void itemAdd() {
+		PickingEditActivity_.intent(this).pickingId(0).start();
+	}
+
+	@OptionsItem(R.id.itemSynch)
+	void itemSynch() {
+		dialog = ProgressDialog.show(this, "", "Synchronizing...", true);
+		dialog.show();
+		manualSynch();
+	}
+
+	@Background
+	void manualSynch() {
+		appManager.synchronize(
+				userPrefs.getLong(OnddoConstants.USER_PREFS_USER_ID, 0), this);
+		finishedBackgroundThread(BG_RESULT_SYNCH_OK);
+	}
 	 
-	 @OptionsItem(R.id.itemSynch)
-	 void itemSynch(){
-		 appManager.synchronize(userPrefs.getLong(OnddoConstants.USER_PREFS_USER_ID, 0), this);
-		 tabHost.setCurrentTab(0);
-	 }
+	@UiThread
+	void finishedBackgroundThread(int result) {
+		switch (result) {
+		case BG_RESULT_SYNCH_OK:
+			dialog.cancel();
+			Toast.makeText(this, "Synch done!", Toast.LENGTH_SHORT).show();
+			startActivity(getIntent()); 
+			finish();
+			break;
+
+		default:
+			break;
+		}
+	}
 	 
 	 @OptionsItem(R.id.itemExit)
 	 void itemExit(){
@@ -66,5 +93,7 @@ public class OnddoMainActivity extends TabActivity {
 	 private static String TAG = "OnddoMainActivity";
 	 @Bean
 	 AppManager appManager;
+	 private ProgressDialog dialog;
+	 private final int BG_RESULT_SYNCH_OK=0;
 
 }
