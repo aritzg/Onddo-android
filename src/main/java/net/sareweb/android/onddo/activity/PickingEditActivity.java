@@ -1,27 +1,25 @@
 package net.sareweb.android.onddo.activity;
 
-import java.io.File;
 import java.util.Date;
-
-import com.googlecode.androidannotations.annotations.Click;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.Extra;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 import net.sareweb.android.onddo.R;
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.android.onddo.sqlite.PickingOpenHelper;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import net.sareweb.lifedroid.exception.IntrospectionException;
-
+import net.sareweb.lifedroid.sqlite.generic.LDSQLiteHelper;
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.googlecode.androidannotations.annotations.Click;
+import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.Extra;
+import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity
 public class PickingEditActivity extends Activity {
@@ -78,6 +76,7 @@ public class PickingEditActivity extends Activity {
 			
 			Log.d(TAG,"p.getModifiedDate()  " +  p.getModifiedDate());
 			
+			if(p.getObjectStatus().equals(LDSQLiteHelper.OBJECT_STATUS_SYNCH))p.setObjectStatus(LDSQLiteHelper.OBJECT_STATUS_DIRTY);
 			p = pickingHelper.persist(p);
 			
 			Toast.makeText(this, "Picking saved!", Toast.LENGTH_LONG).show();

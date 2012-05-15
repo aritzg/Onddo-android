@@ -2,13 +2,11 @@ package net.sareweb.android.onddo.liferay.service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Date;
 import java.util.List;
 
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.lifedroid.liferay.service.generic.LDRESTService;
 
-import org.apache.commons.lang.CharSet;
 import org.springframework.http.HttpMethod;
 
 import android.util.Log;

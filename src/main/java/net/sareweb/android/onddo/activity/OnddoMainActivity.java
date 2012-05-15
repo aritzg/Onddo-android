@@ -3,24 +3,16 @@ package net.sareweb.android.onddo.activity;
 import net.sareweb.android.onddo.R;
 import net.sareweb.android.onddo.manager.AppManager;
 import net.sareweb.android.onddo.util.OnddoConstants;
-import android.app.Activity;
 import android.app.TabActivity;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TabHost;
-import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.Bean;
-import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.Extra;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity
 @OptionsMenu(value = R.menu.onddo_menu)

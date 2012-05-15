@@ -1,7 +1,5 @@
 package net.sareweb.android.onddo.model;
 
-import java.util.Date;
-
 import net.sareweb.lifedroid.annotation.LDField;
 import net.sareweb.lifedroid.model.LDObject;
 

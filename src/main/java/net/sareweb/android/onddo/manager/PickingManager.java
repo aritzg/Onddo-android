@@ -8,7 +8,6 @@ import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.android.onddo.sqlite.PickingOpenHelper;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import net.sareweb.lifedroid.exception.IntrospectionException;
-import net.sareweb.lifedroid.model.LDObject;
 import net.sareweb.lifedroid.sqlite.generic.LDSQLiteHelper;
 import android.content.Context;
 import android.content.SharedPreferences;

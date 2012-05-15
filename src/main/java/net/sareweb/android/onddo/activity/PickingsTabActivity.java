@@ -7,22 +7,13 @@ import net.sareweb.android.onddo.adapter.PickingAdapter;
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.android.onddo.sqlite.PickingOpenHelper;
 import net.sareweb.android.onddo.util.OnddoConstants;
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
 
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.ItemLongClick;
 
 
 @EActivity

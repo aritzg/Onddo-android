@@ -2,12 +2,12 @@ package net.sareweb.android.onddo.sqlite;
 
 import java.util.List;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.util.Log;
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import net.sareweb.lifedroid.sqlite.generic.LDSQLiteHelper;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.util.Log;
 
 public class PickingOpenHelper extends LDSQLiteHelper<Picking> {
 	

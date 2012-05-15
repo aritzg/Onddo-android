@@ -1,9 +1,5 @@
 package net.sareweb.android.onddo.manager;
 
-import java.util.List;
-
-import net.sareweb.android.onddo.model.Picking;
-import net.sareweb.android.onddo.sqlite.PickingOpenHelper;
 import android.content.Context;
 import android.util.Log;
 
