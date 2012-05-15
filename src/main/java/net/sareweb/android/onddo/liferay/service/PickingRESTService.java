@@ -46,7 +46,7 @@ public class PickingRESTService extends LDRESTService<Picking> {
 		requestURL = addParamToRequestURL(requestURL, "humidity", picking.getHumidity());
 		requestURL = addParamToRequestURL(requestURL, "imgId","11111");
 		requestURL = addParamToRequestURL(requestURL, "imgName", "imageName");
-		
+		Log.d(TAG, "REST request " + requestURL);
 		run(requestURL, HttpMethod.POST);
 	}
 	

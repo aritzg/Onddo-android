@@ -9,9 +9,15 @@ import net.sareweb.android.onddo.util.OnddoConstants;
 import net.sareweb.lifedroid.exception.IntrospectionException;
 import net.sareweb.lifedroid.sqlite.generic.LDSQLiteHelper;
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -22,12 +28,14 @@ import com.googlecode.androidannotations.annotations.Extra;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity
-public class PickingEditActivity extends Activity {
+public class PickingEditActivity extends Activity implements LocationListener {
 
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.picking_edit);
+		
+		configGPS();
 		
 		pickingHelper = new PickingOpenHelper(this);
 		
@@ -43,11 +51,32 @@ public class PickingEditActivity extends Activity {
 		populateFields(p);
 	}
 	
+	protected void onStop() {
+	    super.onStop();
+	    locationManager.removeUpdates(this);
+	}
+	
+
 	@Click(R.id.btnSave)
 	void clickBtnSave(){
 		updatePickingFromFields();
 		persistPicking();
 		finish();
+	}
+	
+	@Click(R.id.btnRefresh)
+	void clickBtnRefresh(){
+		if(!gpsEnabled){
+			Toast.makeText(this, "GPS not enabled! ", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if(location==null){
+			Toast.makeText(this, "Still waiting for location. Sorry! ", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		txLat.setText(String.valueOf(location.getLatitude()));
+		txLng.setText(String.valueOf(location.getLongitude()));
+		Toast.makeText(this, "Location updated!", Toast.LENGTH_SHORT).show();
 	}
 	
 	@Click(R.id.btnBack)
@@ -98,6 +127,41 @@ public class PickingEditActivity extends Activity {
 		txType.setText(p.getType());
 	}
 	
+	private void configGPS() {
+		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		if(!gpsEnabled){
+			Toast.makeText(this, "GPS not enabled! ", Toast.LENGTH_SHORT).show();
+		}
+		else{
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 5, this);
+		}
+	}
+	
+	
+	@Override
+	public void onLocationChanged(Location location) {
+		this.location=location;
+	}
+
+	@Override
+	public void onProviderDisabled(String arg0) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void onProviderEnabled(String arg0) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void onStatusChanged(String arg0, int arg1, Bundle arg2) {
+		// TODO Auto-generated method stub
+	}
+	
+	@ViewById
+	Button btnRefresh;
+	
 	@ViewById
 	EditText txLat;
 	@ViewById
@@ -114,7 +178,13 @@ public class PickingEditActivity extends Activity {
 	PickingOpenHelper pickingHelper;
 	long userId;
 	SharedPreferences userPrefs;
-	
+	LocationManager locationManager;
+	Location location;
+	boolean gpsEnabled;
+		
 	String TAG ="PickingEditActivity";
+
+	
 	
 }
+
