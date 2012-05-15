@@ -58,6 +58,11 @@ public class OnddoMainActivity extends TabActivity {
 		dialog.show();
 		manualSynch();
 	}
+	
+	@OptionsItem(R.id.itemSettings)
+	void itemSettings() {
+		UserSettingsActivity_.intent(this).start();
+	}
 
 	@Background
 	void manualSynch() {

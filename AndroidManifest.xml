@@ -39,6 +39,10 @@
             android:name=".activity.PickingEditActivity_" 
 			android:theme="@android:style/Theme.NoTitleBar">
         </activity>
+        <activity 
+            android:name=".activity.UserSettingsActivity_" 
+			android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
         
     </application>
 
