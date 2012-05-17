@@ -3,12 +3,15 @@ package net.sareweb.android.onddo.activity;
 import java.util.Date;
 
 import net.sareweb.android.onddo.R;
+import net.sareweb.android.onddo.adapter.MoonsAdapter;
+import net.sareweb.android.onddo.adapter.WeathersAdapter;
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.android.onddo.sqlite.PickingOpenHelper;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import net.sareweb.lifedroid.exception.IntrospectionException;
 import net.sareweb.lifedroid.sqlite.generic.LDSQLiteHelper;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -18,7 +21,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.Click;
@@ -83,6 +86,23 @@ public class PickingEditActivity extends Activity implements LocationListener {
 		finish();
 	}
 	
+	@Click(R.id.imgMoon)
+	void clickImgMoon(){
+		moonsAdapter = new MoonsAdapter(this);
+		new AlertDialog.Builder(this)
+	    .setTitle("Moon Phase")
+	    .setAdapter(moonsAdapter, moonsAdapter).show();
+	}
+	
+	@Click(R.id.imgWeather)
+	void clickImgWeather(){
+		weathersAdapter = new WeathersAdapter(this);
+		new AlertDialog.Builder(this)
+	    .setTitle("Weather")
+	    .setAdapter(weathersAdapter, weathersAdapter).show();
+	}
+
+	
 	private void retrievePricking(){
 		p = pickingHelper.getById(pickingId);
 	}
@@ -94,6 +114,7 @@ public class PickingEditActivity extends Activity implements LocationListener {
 		p.setLng(0.0);
 		p.setUserId(userId);
 	}
+	
 	
 	private void persistPicking(){
 		try {
@@ -168,7 +189,9 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	@ViewById
 	EditText txType;
 	@ViewById
-	Spinner spWeather;
+	ImageView imgMoon;
+	@ViewById
+	ImageView imgWeather;
 	
 	@Extra(OnddoConstants.PARAM_PICKING_ID)
 	long pickingId;
@@ -180,6 +203,8 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	LocationManager locationManager;
 	Location location;
 	boolean gpsEnabled;
+	MoonsAdapter moonsAdapter;
+	WeathersAdapter weathersAdapter;
 		
 	String TAG ="PickingEditActivity";
 
