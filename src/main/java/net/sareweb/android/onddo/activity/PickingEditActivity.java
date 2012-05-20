@@ -169,7 +169,7 @@ public class PickingEditActivity extends Activity implements LocationListener {
 			imgWeather.setImageResource(WeatherUtil.getWeatherDialogOptionsMap().get(p.getWeather()).getImgResId());
 		}
 		if(p.getImgName()!=null && !p.getImgName().equals("")){
-			imgPic.setImageURI(Uri.fromFile(new File(p.getImgName())));
+			imgPic.setImageURI(Uri.fromFile(new File(ImageUtil.getMediaStorageDir() + "/" + p.getImgName())));
 		}
 		
 	}
@@ -188,10 +188,10 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
 	        if (resultCode == RESULT_OK) {
-
-	        	p.setImgName(imagePath);
-	        	ImageUtil.resizeFile(new File(imagePath));
+	        	File image = new File(imagePath);
+	        	ImageUtil.resizeFile(image);
 	        	imgPic.setImageURI(Uri.fromFile(new File(imagePath)));
+	        	p.setImgName(image.getName());
 	        	
 	        } else if (resultCode == RESULT_CANCELED) {
 	            // User cancelled the image capture

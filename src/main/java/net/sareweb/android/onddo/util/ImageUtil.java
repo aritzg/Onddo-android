@@ -59,6 +59,16 @@ public class ImageUtil {
 
 	    return mediaFile;
 	}
+	
+	public static String getMediaStorageDir(){
+
+	    File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+	              Environment.DIRECTORY_PICTURES), "Onddo");
+	   
+	    return mediaStorageDir.getAbsolutePath();
+	}
+	
+	
 
 	private static String TAG = "ImageUtil";
 

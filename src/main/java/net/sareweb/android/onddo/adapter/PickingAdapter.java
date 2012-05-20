@@ -1,5 +1,6 @@
 package net.sareweb.android.onddo.adapter;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -8,15 +9,19 @@ import net.sareweb.android.onddo.R;
 import net.sareweb.android.onddo.activity.PickingEditActivity_;
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.android.onddo.sqlite.PickingOpenHelper;
+import net.sareweb.android.onddo.util.ImageUtil;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +74,12 @@ public class PickingAdapter extends BaseAdapter implements OnClickListener,
 		Date tmpDate = new Date();
 		if(picking.getCreateDate()!=null)tmpDate = new Date(picking.getCreateDate());
 		date.setText(sdf.format(tmpDate));
+		
+		Log.d(TAG, "picking.getImgName() " + picking.getImgName());
+		if(picking.getImgName()!=null && !"".equals(picking.getImgName())){
+			ImageView imgPic = (ImageView)convertView.findViewById(R.id.imgPic);
+			imgPic.setImageURI(Uri.fromFile(new File(ImageUtil.getMediaStorageDir() + "/" + picking.getImgName())));
+		}
 		
 		convertView.setOnClickListener(this);
 		convertView.setOnLongClickListener(this);

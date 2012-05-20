@@ -45,7 +45,13 @@ public class PickingRESTService extends LDRESTService<Picking> {
 		requestURL = addParamToRequestURL(requestURL, "temperature", picking.getTemperature());
 		requestURL = addParamToRequestURL(requestURL, "humidity", picking.getHumidity());
 		requestURL = addParamToRequestURL(requestURL, "imgId","11111");
-		requestURL = addParamToRequestURL(requestURL, "imgName", "imageName");
+		encodedText ="";
+		try {
+			encodedText = URLEncoder.encode(picking.getImgName(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, "Error encoding text", e);
+		}
+		requestURL = addParamToRequestURL(requestURL, "imgName", encodedText);
 		Log.d(TAG, "REST request " + requestURL);
 		run(requestURL, HttpMethod.POST);
 	}
@@ -71,7 +77,13 @@ public class PickingRESTService extends LDRESTService<Picking> {
 		requestURL = addParamToRequestURL(requestURL, "temperature", picking.getTemperature());
 		requestURL = addParamToRequestURL(requestURL, "humidity", picking.getHumidity());
 		requestURL = addParamToRequestURL(requestURL, "imgId","11111");
-		requestURL = addParamToRequestURL(requestURL, "imgName", "imageName");
+		encodedText ="";
+		try {
+			encodedText = URLEncoder.encode(picking.getImgName(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			Log.e(TAG, "Error encoding text", e);
+		}
+		requestURL = addParamToRequestURL(requestURL, "imgName", encodedText);
 		
 		Log.d(TAG, "REST request " + requestURL);
 		run(requestURL, HttpMethod.POST);
