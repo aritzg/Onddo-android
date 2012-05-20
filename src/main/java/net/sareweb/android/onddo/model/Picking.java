@@ -40,6 +40,12 @@ public class Picking extends LDObject {
 	
 	@LDField(sqliteType=LDField.SQLITE_TYPE_REAL)
 	private Double humidity;
+	
+	@LDField(sqliteType=LDField.SQLITE_TYPE_INTEGER)
+	private Long imgId;
+	
+	@LDField
+	private String imgName;
 
 	public Long getPickingId() {
 		return pickingId;
@@ -135,6 +141,22 @@ public class Picking extends LDObject {
 
 	public void setHumidity(Double humidity) {
 		this.humidity = humidity;
+	}
+
+	public Long getImgId() {
+		return imgId;
+	}
+
+	public void setImgId(Long imgId) {
+		this.imgId = imgId;
+	}
+
+	public String getImgName() {
+		return imgName;
+	}
+
+	public void setImgName(String imgName) {
+		this.imgName = imgName;
 	}
 	
 }

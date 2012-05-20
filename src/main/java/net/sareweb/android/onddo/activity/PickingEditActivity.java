@@ -1,5 +1,6 @@
 package net.sareweb.android.onddo.activity;
 
+import java.io.File;
 import java.util.Date;
 
 import net.sareweb.android.onddo.R;
@@ -8,6 +9,7 @@ import net.sareweb.android.onddo.dialog.MoonDialogOnClickListener;
 import net.sareweb.android.onddo.dialog.WeatherDialogOnClickListener;
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.android.onddo.sqlite.PickingOpenHelper;
+import net.sareweb.android.onddo.util.ImageUtil;
 import net.sareweb.android.onddo.util.MoonUtil;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import net.sareweb.android.onddo.util.WeatherUtil;
@@ -16,11 +18,14 @@ import net.sareweb.lifedroid.sqlite.generic.LDSQLiteHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -104,6 +109,15 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	    .setTitle("Weather")
 	    .setAdapter(weathersAdapter, new WeatherDialogOnClickListener(p, imgWeather)).show();
 	}
+	
+	@Click(R.id.imgCamera)
+	void clickImgCamera(){
+		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		fileUri = Uri.fromFile(ImageUtil.getOutputMediaFile());
+		imagePath = fileUri.getPath();
+		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+	}
 
 	
 	private void retrievePricking(){
@@ -154,6 +168,9 @@ public class PickingEditActivity extends Activity implements LocationListener {
 		if(!p.getWeather().equals("")){
 			imgWeather.setImageResource(WeatherUtil.getWeatherDialogOptionsMap().get(p.getWeather()).getImgResId());
 		}
+		if(p.getImgName()!=null && !p.getImgName().equals("")){
+			imgPic.setImageURI(Uri.fromFile(new File(p.getImgName())));
+		}
 		
 	}
 	
@@ -166,6 +183,22 @@ public class PickingEditActivity extends Activity implements LocationListener {
 		else{
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 5, this);
 		}
+	}
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+	        if (resultCode == RESULT_OK) {
+
+	        	p.setImgName(imagePath);
+	        	ImageUtil.resizeFile(new File(imagePath));
+	        	imgPic.setImageURI(Uri.fromFile(new File(imagePath)));
+	        	
+	        } else if (resultCode == RESULT_CANCELED) {
+	            // User cancelled the image capture
+	        } else {
+	            // Image capture failed, advise user
+	        }
+	    }
 	}
 	
 	
@@ -202,6 +235,8 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	ImageView imgMoon;
 	@ViewById
 	ImageView imgWeather;
+	@ViewById
+	ImageView imgPic;
 	
 	@Extra(OnddoConstants.PARAM_PICKING_ID)
 	long pickingId;
@@ -215,6 +250,9 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	boolean gpsEnabled;
 	DialogImagesAdapter moonsAdapter;
 	DialogImagesAdapter weathersAdapter;
+	Uri fileUri;
+	String imagePath;
+	final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
 		
 	String TAG ="PickingEditActivity";
 
