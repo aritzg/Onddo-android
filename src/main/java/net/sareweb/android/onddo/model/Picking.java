@@ -30,10 +30,10 @@ public class Picking extends LDObject {
 	private Double lng;
 	
 	@LDField
-	private String moonPhase;
+	private String moonPhase = "m01";
 	
 	@LDField
-	private String weather;
+	private String weather = "w01";
 	
 	@LDField(sqliteType=LDField.SQLITE_TYPE_REAL)
 	private Double temperature;

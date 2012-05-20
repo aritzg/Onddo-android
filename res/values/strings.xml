@@ -2,4 +2,51 @@
 <resources>
     <string name="hello">Hello onddo!</string>
     <string name="app_name">onddo</string>
+    
+    <string name="m01">m01</string>
+    <string name="m02">m02</string>
+    <string name="m03">m03</string>
+    <string name="m04">m04</string>
+    <string name="m05">m05</string>
+    <string name="m06">m06</string>
+    <string name="m07">m07</string>
+    <string name="m08">m08</string>
+    <string name="m09">m09</string>
+    <string name="m10">m10</string>
+    <string name="m11">m11</string>
+    <string name="m12">m12</string>
+    <string name="m13">m13</string>
+    <string name="m14">m14</string>
+    <string name="m15">m15</string>
+    <string name="m16">m16</string>
+    <string name="m17">m17</string>
+    <string name="m18">m18</string>
+    <string name="m19">m19</string>
+    <string name="m20">m20</string>
+    <string name="m21">m21</string>
+    <string name="m22">m22</string>
+    <string name="m23">m23</string>
+    <string name="m24">m24</string>
+    
+    <string name="w01">w01</string>
+    <string name="w02">w02</string>
+    <string name="w03">w03</string>
+    <string name="w04">w04</string>
+    <string name="w05">w05</string>
+    <string name="w06">w06</string>
+    <string name="w07">w07</string>
+    <string name="w08">w08</string>
+    <string name="w09">w09</string>
+    <string name="w10">w10</string>
+    <string name="w11">w11</string>
+    <string name="w12">w12</string>
+    <string name="w13">w13</string>
+    <string name="w14">w14</string>
+    <string name="w15">w15</string>
+    <string name="w16">w16</string>
+    <string name="w17">w17</string>
+    <string name="w18">w18</string>
+    <string name="w19">w19</string>
+    <string name="w20">w20</string>
+   
 </resources>

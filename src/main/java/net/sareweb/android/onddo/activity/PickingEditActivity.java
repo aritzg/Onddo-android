@@ -3,11 +3,14 @@ package net.sareweb.android.onddo.activity;
 import java.util.Date;
 
 import net.sareweb.android.onddo.R;
-import net.sareweb.android.onddo.adapter.MoonsAdapter;
-import net.sareweb.android.onddo.adapter.WeathersAdapter;
+import net.sareweb.android.onddo.adapter.DialogImagesAdapter;
+import net.sareweb.android.onddo.dialog.MoonDialogOnClickListener;
+import net.sareweb.android.onddo.dialog.WeatherDialogOnClickListener;
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.android.onddo.sqlite.PickingOpenHelper;
+import net.sareweb.android.onddo.util.MoonUtil;
 import net.sareweb.android.onddo.util.OnddoConstants;
+import net.sareweb.android.onddo.util.WeatherUtil;
 import net.sareweb.lifedroid.exception.IntrospectionException;
 import net.sareweb.lifedroid.sqlite.generic.LDSQLiteHelper;
 import android.app.Activity;
@@ -88,18 +91,18 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	
 	@Click(R.id.imgMoon)
 	void clickImgMoon(){
-		moonsAdapter = new MoonsAdapter(this);
+		moonsAdapter = new DialogImagesAdapter(this, MoonUtil.getMoonDialogOptions());
 		new AlertDialog.Builder(this)
 	    .setTitle("Moon Phase")
-	    .setAdapter(moonsAdapter, moonsAdapter).show();
+	    .setAdapter(moonsAdapter, new MoonDialogOnClickListener(p, imgMoon)).show();
 	}
 	
 	@Click(R.id.imgWeather)
 	void clickImgWeather(){
-		weathersAdapter = new WeathersAdapter(this);
+		weathersAdapter = new DialogImagesAdapter(this, WeatherUtil.getWeatherDialogOptions());
 		new AlertDialog.Builder(this)
 	    .setTitle("Weather")
-	    .setAdapter(weathersAdapter, weathersAdapter).show();
+	    .setAdapter(weathersAdapter, new WeatherDialogOnClickListener(p, imgWeather)).show();
 	}
 
 	
@@ -145,6 +148,13 @@ public class PickingEditActivity extends Activity implements LocationListener {
 		txLat.setText(p.getLat().toString());
 		txLng.setText(p.getLng().toString());
 		txType.setText(p.getType());
+		if(!p.getMoonPhase().equals("")){
+			imgMoon.setImageResource(MoonUtil.getMoonDialogOptionsMap().get(p.getMoonPhase()).getImgResId());
+		}
+		if(!p.getWeather().equals("")){
+			imgWeather.setImageResource(WeatherUtil.getWeatherDialogOptionsMap().get(p.getWeather()).getImgResId());
+		}
+		
 	}
 	
 	private void configGPS() {
@@ -203,8 +213,8 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	LocationManager locationManager;
 	Location location;
 	boolean gpsEnabled;
-	MoonsAdapter moonsAdapter;
-	WeathersAdapter weathersAdapter;
+	DialogImagesAdapter moonsAdapter;
+	DialogImagesAdapter weathersAdapter;
 		
 	String TAG ="PickingEditActivity";
 
