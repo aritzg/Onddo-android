@@ -103,7 +103,7 @@
                 android:id="@+id/linearLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:orientation="vertical" >
 
                 <ImageView
@@ -114,10 +114,19 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/imgGallery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.25"
+                android:src="@android:drawable/ic_menu_slideshow" />
+
+            <ImageView
                 android:id="@+id/imgCamera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.25"
                 android:src="@android:drawable/ic_menu_camera" />
+
         </TableRow>
 
         <TableRow

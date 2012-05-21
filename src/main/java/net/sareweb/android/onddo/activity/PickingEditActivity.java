@@ -1,6 +1,7 @@
 package net.sareweb.android.onddo.activity;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 import net.sareweb.android.onddo.R;
@@ -118,6 +119,13 @@ public class PickingEditActivity extends Activity implements LocationListener {
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
 	}
+	
+	@Click(R.id.imgGallery)
+	void clickImgGallery(){
+		Intent intent = new Intent(Intent.ACTION_PICK,
+			     android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+			   startActivityForResult(intent, GET_IMG_FROM_GALLERY_ACTIVITY_REQUEST_CODE);
+	}
 
 	
 	private void retrievePricking(){
@@ -200,6 +208,27 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	            // Image capture failed, advise user
 	        }
 	    }
+	    else if (requestCode == GET_IMG_FROM_GALLERY_ACTIVITY_REQUEST_CODE) {
+	        if (resultCode == RESULT_OK) {
+	        	Uri targetUri = data.getData();
+	        	
+	        	File original = new File(targetUri.toString());
+	        	File dest = ImageUtil.getOutputMediaFile();
+	        	
+	        	try {
+					ImageUtil.copyInputStreamToFile(getContentResolver().openInputStream(targetUri), dest);
+					ImageUtil.resizeFile(dest);
+					
+					imgPic.setImageURI(targetUri);
+					p.setImgName(dest.getName());
+				} 
+	        	catch (IOException e) {
+	        		Log.e(TAG, "Error copying file", e);
+					Toast.makeText(this, "Error copying file!", Toast.LENGTH_SHORT).show();
+				}
+	        	
+	        }
+	    }
 	}
 	
 	
@@ -252,6 +281,8 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	Uri fileUri;
 	String imagePath;
 	final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+	final int GET_IMG_FROM_GALLERY_ACTIVITY_REQUEST_CODE = 200;
+	
 		
 	String TAG ="PickingEditActivity";
 

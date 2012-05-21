@@ -3,12 +3,16 @@ package net.sareweb.android.onddo.util;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -66,6 +70,42 @@ public class ImageUtil {
 	              Environment.DIRECTORY_PICTURES), "Onddo");
 	   
 	    return mediaStorageDir.getAbsolutePath();
+	}
+	
+	public static void copyImage(File from, File to) throws IOException {
+		FileInputStream inStream = new FileInputStream(from);
+		FileOutputStream outStream = new FileOutputStream(to);
+
+		byte[] buffer = new byte[1024];
+
+		int length;
+		// copy the file content in bytes
+		while ((length = inStream.read(buffer)) > 0) {
+
+			outStream.write(buffer, 0, length);
+
+		}
+
+		inStream.close();
+		outStream.close();
+	}
+	
+	public static void copyInputStreamToFile(InputStream from, File to) throws IOException {
+		FileInputStream inStream = (FileInputStream)from;
+		FileOutputStream outStream = new FileOutputStream(to);
+
+		byte[] buffer = new byte[1024];
+
+		int length;
+		// copy the file content in bytes
+		while ((length = inStream.read(buffer)) > 0) {
+
+			outStream.write(buffer, 0, length);
+
+		}
+
+		inStream.close();
+		outStream.close();
 	}
 	
 	
