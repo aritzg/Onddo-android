@@ -74,8 +74,8 @@ public class PickingEditActivity extends Activity implements LocationListener {
 		finish();
 	}
 	
-	@Click(R.id.btnRefresh)
-	void clickBtnRefresh(){
+	@Click(R.id.imgLocation)
+	void clickImgLocation(){
 		if(!gpsEnabled){
 			Toast.makeText(this, "GPS not enabled! ", Toast.LENGTH_SHORT).show();
 			return;
@@ -222,8 +222,6 @@ public class PickingEditActivity extends Activity implements LocationListener {
 		// TODO Auto-generated method stub
 	}
 	
-	@ViewById
-	Button btnRefresh;
 	
 	@ViewById
 	EditText txLat;

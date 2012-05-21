@@ -76,9 +76,12 @@ public class PickingAdapter extends BaseAdapter implements OnClickListener,
 		date.setText(sdf.format(tmpDate));
 		
 		Log.d(TAG, "picking.getImgName() " + picking.getImgName());
+		ImageView imgPic = (ImageView)convertView.findViewById(R.id.imgPic);
 		if(picking.getImgName()!=null && !"".equals(picking.getImgName())){
-			ImageView imgPic = (ImageView)convertView.findViewById(R.id.imgPic);
 			imgPic.setImageURI(Uri.fromFile(new File(ImageUtil.getMediaStorageDir() + "/" + picking.getImgName())));
+		}
+		else{
+			imgPic.setImageResource(R.drawable.no_image);
 		}
 		
 		convertView.setOnClickListener(this);

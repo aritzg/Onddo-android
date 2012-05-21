@@ -106,11 +106,11 @@
                 android:layout_weight="1"
                 android:orientation="vertical" >
 
-                <Button
-                    android:id="@+id/btnRefresh"
+                <ImageView
+                    android:id="@+id/imgLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Refresh" />
+                    android:src="@android:drawable/ic_menu_mylocation" />
             </LinearLayout>
 
             <ImageView
