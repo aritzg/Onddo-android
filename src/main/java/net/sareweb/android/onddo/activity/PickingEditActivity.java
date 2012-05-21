@@ -130,6 +130,7 @@ public class PickingEditActivity extends Activity implements LocationListener {
 		p.setLat(0.0);
 		p.setLng(0.0);
 		p.setUserId(userId);
+		p.setMoonPhase(MoonUtil.calculatePhase(new Date()));
 	}
 	
 	
