@@ -5,6 +5,7 @@ import net.sareweb.android.onddo.manager.AppManager;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -38,9 +39,10 @@ public class OnddoMainActivity extends TabActivity {
             .setContent(PickingsTabActivity_.intent(this). get());
 		tabHost.addTab(spec);
 		
+		Intent mapIntent = new Intent().setClass(this, MapTabActivity.class);
 		spec = tabHost.newTabSpec("map").setIndicator("Map",
                 res.getDrawable(R.drawable.ic_tab_map))
-            .setContent(PickingsTabActivity_.intent(this).get());
+            .setContent(mapIntent);
 		tabHost.addTab(spec);
 		
 		tabHost.setCurrentTab(0);

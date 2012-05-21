@@ -12,6 +12,9 @@
     <application
         android:icon="@drawable/ico"
         android:label="@string/app_name" >
+        
+        <uses-library android:name="com.google.android.maps"/>
+        
         <activity android:name=".activity.StartActivity_" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +36,10 @@
         </activity>
         <activity 
             android:name=".activity.PickingsTabActivity_" 
+			android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity 
+            android:name=".activity.MapTabActivity" 
 			android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         <activity 
