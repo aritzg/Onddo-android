@@ -15,7 +15,8 @@
         
         <uses-library android:name="com.google.android.maps"/>
         
-        <activity android:name=".activity.StartActivity_" >
+        <activity android:name=".activity.StartActivity_" 
+            android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 
 @EActivity(R.layout.start)
@@ -27,13 +28,17 @@ public class StartActivity extends Activity {
 		
 		if(loggedUser.equals("")){
 			Log.d(TAG, "Not logged yet!");
-			showAcountDialog();	
 		}
 		else{
 			Log.d(TAG, "Logged as " + loggedUser);
 			finish();
 			OnddoMainActivity_.intent(this).start();
 		}
+	}
+	
+	@Click(R.id.btnStart)
+	void clickBtnStart(){
+		showAcountDialog();	
 	}
 
 	private void showAcountDialog() {
@@ -65,6 +70,7 @@ public class StartActivity extends Activity {
 		String mail = emailAddress;
 		if(emailAddress.equals(other))mail="";
 		LogInActivity_.intent(this).emailAddress(mail).start(); 
+		finish();
 	}
 
 	

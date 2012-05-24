@@ -94,6 +94,7 @@ public class RegisterActivity extends Activity {
 			dialog.cancel();
 			finish();
 			OnddoMainActivity_.intent(this).start();
+			finish();
 			break;
 		default:
 			break;

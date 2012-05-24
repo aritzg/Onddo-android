@@ -60,6 +60,7 @@ public class LogInActivity extends Activity {
     	dialog.cancel();
     	if(result==LOG_IN_OK){
     		OnddoMainActivity_.intent(this).start();
+    		finish();
     	}
     	else{
     		Toast.makeText(getApplicationContext(), "Wrong pass or not registered!", Toast.LENGTH_SHORT).show();
