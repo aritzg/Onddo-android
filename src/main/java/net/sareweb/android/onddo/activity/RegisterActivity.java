@@ -33,13 +33,35 @@ public class RegisterActivity extends Activity {
 	
 	@Click(R.id.btnRegister)
 	void clickBtnRegister(){
+		if(validateRegisterForm()){
+			dialog = ProgressDialog.show(this, "", "Registering user.", true);
+			dialog.show();
+			createUser(txName.getText().toString(), txSurname.getText().toString(), txEmail.getText().toString(), txPass.getText().toString());
+		}
+	}
+	
+	private boolean validateRegisterForm(){
+		if(txName.getText().toString().equals("")){
+			Toast.makeText(this, "Name required!", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		if(txSurname.getText().toString().equals("")){
+			Toast.makeText(this, "Surname required!", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		if(!android.util.Patterns.EMAIL_ADDRESS.matcher(txEmail.getText().toString()).matches()){
+			Toast.makeText(this, "Not valid email address!", Toast.LENGTH_SHORT).show();
+			return false;
+		}
+		if(txPass.getText().toString().length()==0){
+			Toast.makeText(this, "Empty passwords not allowed!", Toast.LENGTH_SHORT).show();
+			return false;			
+		}
 		if(!txPass.getText().toString().equals(txPass2.getText().toString())){
 			Toast.makeText(this, "Passwords are not equal", Toast.LENGTH_SHORT).show();
-			return;
+			return false;
 		}
-		dialog = ProgressDialog.show(this, "", "Registering user.", true);
-		dialog.show();
-		createUser(txName.getText().toString(), txSurname.getText().toString(), txEmail.getText().toString(), txPass.getText().toString());
+		return true;
 	}
 	
 	@Background
