@@ -31,6 +31,9 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.googlecode.androidannotations.annotations.Click;
@@ -39,14 +42,14 @@ import com.googlecode.androidannotations.annotations.Extra;
 import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity
-public class PickingEditActivity extends Activity implements LocationListener {
+public class PickingEditActivity extends Activity implements LocationListener, OnSeekBarChangeListener{
 
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.picking_edit);
 		
-		configGPS();
+		initComponents();
 		
 		pickingHelper = new PickingOpenHelper(this);
 		
@@ -60,6 +63,9 @@ public class PickingEditActivity extends Activity implements LocationListener {
 			initPicking();
 		}
 		populateFields(p);
+		
+		
+		
 	}
 	
 	protected void onStop() {
@@ -164,7 +170,9 @@ public class PickingEditActivity extends Activity implements LocationListener {
 		if(!txLat.getText().toString().equals(""))p.setLat(Double.parseDouble(txLat.getText().toString()));
 		if(!txLng.getText().toString().equals(""))p.setLng(Double.parseDouble(txLng.getText().toString()));
 		p.setType(txType.getText().toString());
-		//p.setWeather(spWeather.getSelectedItem().));
+		p.setHumidity(new Double(sbHumidity.getProgress()));
+		p.setTemperature(new Double(sbTemperature.getProgress()));
+		//
 	}
 	
 	private void populateFields(Picking p) {
@@ -181,6 +189,19 @@ public class PickingEditActivity extends Activity implements LocationListener {
 			imgPic.setImageURI(Uri.fromFile(new File(ImageUtil.getMediaStorageDir() + "/" + p.getImgName())));
 		}
 		
+		if(p.getHumidity()!=null){
+			sbHumidity.setProgress(p.getHumidity().intValue());
+		}
+		if(p.getTemperature()!=null){
+			sbTemperature.setProgress(p.getTemperature().intValue());
+		}
+		
+	}
+	
+	private void initComponents(){
+		configGPS();
+		sbHumidity.setOnSeekBarChangeListener(this);
+		sbTemperature.setOnSeekBarChangeListener(this);
 	}
 	
 	private void configGPS() {
@@ -253,6 +274,37 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	}
 	
 	
+	/*OnSeekBarChangeListener implementations*/
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress,
+			boolean fromUser) {
+		switch (seekBar.getId()) {
+		case R.id.sbHumidity:
+			txHumidity.setText(progress + "%");
+			break;
+		case R.id.sbTemperature:
+			txTemp.setText(progress + "ºC");
+			break;
+		default:
+			break;
+		}
+		
+	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
+		
+	}
+	/*OnSeekBarChangeListener implementations end*/
+	
+	
 	@ViewById
 	EditText txLat;
 	@ViewById
@@ -265,6 +317,15 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	ImageView imgWeather;
 	@ViewById
 	ImageView imgPic;
+	@ViewById
+	SeekBar sbHumidity;
+	@ViewById
+	SeekBar sbTemperature;
+	@ViewById
+	TextView txHumidity;
+	@ViewById
+	TextView txTemp;
+	
 	
 	@Extra(OnddoConstants.PARAM_PICKING_ID)
 	long pickingId;
@@ -285,6 +346,9 @@ public class PickingEditActivity extends Activity implements LocationListener {
 	
 		
 	String TAG ="PickingEditActivity";
+
+
+	
 
 	
 	
