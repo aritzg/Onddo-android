@@ -120,7 +120,7 @@ public class PickingEditActivity extends Activity implements LocationListener, O
 	@Click(R.id.imgCamera)
 	void clickImgCamera(){
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		fileUri = Uri.fromFile(ImageUtil.getOutputMediaFile());
+		fileUri = Uri.fromFile(ImageUtil.getOutputMediaFile(String.valueOf(userId)));
 		imagePath = fileUri.getPath();
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
 		startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
@@ -234,7 +234,7 @@ public class PickingEditActivity extends Activity implements LocationListener, O
 	        	Uri targetUri = data.getData();
 	        	
 	        	File original = new File(targetUri.toString());
-	        	File dest = ImageUtil.getOutputMediaFile();
+	        	File dest = ImageUtil.getOutputMediaFile(String.valueOf(userId));
 	        	
 	        	try {
 					ImageUtil.copyInputStreamToFile(getContentResolver().openInputStream(targetUri), dest);

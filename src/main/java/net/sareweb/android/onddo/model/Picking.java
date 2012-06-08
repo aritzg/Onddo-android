@@ -45,7 +45,7 @@ public class Picking extends LDObject {
 	private Long imgId;
 	
 	@LDField
-	private String imgName;
+	private String imgName = "";
 
 	public Long getPickingId() {
 		return pickingId;

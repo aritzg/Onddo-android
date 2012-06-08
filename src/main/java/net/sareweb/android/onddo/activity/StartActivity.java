@@ -2,6 +2,7 @@ package net.sareweb.android.onddo.activity;
 
 import net.sareweb.android.onddo.R;
 import net.sareweb.android.onddo.util.OnddoConstants;
+import net.sareweb.lifedroid.liferay.service.DLFileEntryRESTService;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
@@ -22,6 +23,7 @@ public class StartActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		
 		userPrefs = getSharedPreferences(OnddoConstants.USER_PREFS, MODE_PRIVATE);
 		String loggedUser = userPrefs.getString(OnddoConstants.USER_PREFS_EMAIL_ADDRESS, "");

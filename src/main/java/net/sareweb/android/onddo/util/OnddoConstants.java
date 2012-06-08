@@ -16,5 +16,8 @@ public class OnddoConstants {
 	
 	public static final String DEFAULT_USER = "test@liferay.com";
 	public static final String DEFAULT_PASS = "test";
+	
+	public static final long IMAGE_FOLDER = 11426;
+	public static final long IMAGE_REPOSITORY = 10180;
 
 }

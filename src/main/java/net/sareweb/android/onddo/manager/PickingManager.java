@@ -6,8 +6,11 @@ import java.util.List;
 import net.sareweb.android.onddo.liferay.service.PickingRESTService;
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.android.onddo.sqlite.PickingOpenHelper;
+import net.sareweb.android.onddo.util.ImageUtil;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import net.sareweb.lifedroid.exception.IntrospectionException;
+import net.sareweb.lifedroid.liferay.service.DLFileEntryRESTService;
+import net.sareweb.lifedroid.model.DLFileEntry;
 import net.sareweb.lifedroid.sqlite.generic.LDSQLiteHelper;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -31,7 +34,8 @@ public class PickingManager {
 		
 		String email = userPrefs.getString(OnddoConstants.USER_PREFS_EMAIL_ADDRESS, "");
 		String pass = userPrefs.getString(OnddoConstants.USER_PREFS_PASS, "");
-		prs = new PickingRESTService(email, pass);
+		pRs = new PickingRESTService(email, pass);
+		fileRs = new DLFileEntryRESTService(email, pass);
 		
 		Log.d(TAG, "Synchronizing pickings!");
 		
@@ -50,6 +54,11 @@ public class PickingManager {
 		addPickings();
 		
 		retrievePickings(userId);
+	}
+	
+	public void localRest(Context context){
+		pickingHelper = new PickingOpenHelper(context);
+		pickingHelper.deleteAll();
 	}
 	
 	
@@ -73,7 +82,7 @@ public class PickingManager {
 		for (Picking picking: pickingsToBeDeleted) {
 			Log.d(TAG, "Deleting picking " + picking.getPickingId());
 			if(picking.getObjectStatus()!=null && picking.getObjectStatus().equals(LDSQLiteHelper.OBJECT_STATUS_DELETED_REMOTE)){
-				prs.deletePickingById(String.valueOf(picking.getPickingId()));
+				pRs.deletePickingById(String.valueOf(picking.getPickingId()));
 			}
 			pickingHelper.delete(picking.getPickingId());
 		}
@@ -82,7 +91,7 @@ public class PickingManager {
 	private void updatePickings() {
 		for (Picking picking: pickingsToBeUpdated) {
 			Log.d(TAG, "Updating picking " + picking.getPickingId());
-			prs.updatePicking(picking);
+			pRs.updatePicking(picking);
 			pickingHelper.delete(picking.getPickingId());
 		}
 	}
@@ -90,13 +99,18 @@ public class PickingManager {
 	private void addPickings() {
 		for (Picking picking: pickingsToBeAdded) {
 			Log.d(TAG, "Adding picking " + picking.getPickingId());
-			prs.addPicking(picking);
+			if(!picking.getImgName().equals("")){
+				Log.d(TAG, "This new picking needs to upload image");
+				DLFileEntry image = fileRs.addFileEntry(ImageUtil.composeDLFileEntry(picking), ImageUtil.getMediaStorageDir());
+				picking.setImgId(image.getFileEntryId());
+			}
+			pRs.addPicking(picking);
 			pickingHelper.delete(picking.getPickingId());
 		}
 	}
 	
 	private void retrievePickings(long userId) {
-		List<Picking> pickings = prs.findByUserId(userId);
+		List<Picking> pickings = pRs.findByUserId(userId);
 		if(pickings!=null){
 			Log.d("TAG","Pickings retrieved from server " + pickings.size());
 			for (Picking picking : pickings) {
@@ -113,9 +127,12 @@ public class PickingManager {
 		}
 		
 	}
+	
+	
 
 	SharedPreferences userPrefs;
 	private PickingOpenHelper pickingHelper;
-	private PickingRESTService prs;
+	private PickingRESTService pRs;
+	private DLFileEntryRESTService fileRs;
 	private String TAG = "PickingManager";
 }

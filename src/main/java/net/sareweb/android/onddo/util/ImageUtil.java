@@ -10,11 +10,20 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+
+import net.sareweb.android.onddo.model.Picking;
+import net.sareweb.lifedroid.model.DLFileEntry;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
+import android.webkit.MimeTypeMap;
 
 public class ImageUtil {
 
@@ -46,8 +55,8 @@ public class ImageUtil {
 		return;
 	}
 	
-	public static File getOutputMediaFile(){
-
+	public static File getOutputMediaFile(String prefix){
+		
 	    File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
 	              Environment.DIRECTORY_PICTURES), "Onddo");
 	    if (! mediaStorageDir.exists()){
@@ -58,7 +67,7 @@ public class ImageUtil {
 	    }
 
 	    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-	    File mediaFile = new File(mediaStorageDir.getPath() + File.separator +"IMG_"+ timeStamp + ".jpg");
+	    File mediaFile = new File(mediaStorageDir.getPath() + File.separator +prefix +"_"+ timeStamp + ".jpg");
 	   
 
 	    return mediaFile;
@@ -108,7 +117,34 @@ public class ImageUtil {
 		outStream.close();
 	}
 	
+	public static DLFileEntry composeDLFileEntry(Picking p){
+		DLFileEntry file = new DLFileEntry();
+		file.setFolderId(OnddoConstants.IMAGE_FOLDER);
+		file.setRepositoryId(OnddoConstants.IMAGE_REPOSITORY);
+		file.setSourceFileName(p.getImgName());
+		
+		//TODO:This is a fucking mess!!
+		File f = new File(file.getSourceFileName());
+		Uri fileUri = Uri.fromFile(f);
+		String fileExtension = MimeTypeMap.getSingleton()
+				.getFileExtensionFromUrl(fileUri.toString());
+		String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+				fileExtension);
+		
+		file.setMimeType(mimeType);
+		return file;
+	}
 	
+	public static void deleteOnddoImages() {
+		File folder = new File(getMediaStorageDir());
+		String[] list = folder.list();
+		if (list != null) {
+			for (int i = 0; i < list.length; i++) {
+				File entry = new File(folder, list[i]);
+				entry.delete();
+			}
+		}
+	}	
 
 	private static String TAG = "ImageUtil";
 

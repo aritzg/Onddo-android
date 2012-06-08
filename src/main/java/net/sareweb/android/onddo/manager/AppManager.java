@@ -1,5 +1,6 @@
 package net.sareweb.android.onddo.manager;
 
+import net.sareweb.android.onddo.util.ImageUtil;
 import android.content.Context;
 import android.util.Log;
 
@@ -13,6 +14,12 @@ public class AppManager{
 		Log.d(TAG,"Sinchronizing app!");
 		
 		pickingNamager.synchronize(context, userId);
+	}
+	
+	public void localReset(Context context){
+		Log.d(TAG,"Reseting app!");
+		pickingNamager.localRest(context);
+		ImageUtil.deleteOnddoImages();
 	}
 	
 	@Bean
