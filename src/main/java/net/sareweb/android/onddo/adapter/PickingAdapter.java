@@ -1,6 +1,7 @@
 package net.sareweb.android.onddo.adapter;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -77,12 +78,7 @@ public class PickingAdapter extends BaseAdapter implements OnClickListener,
 		
 		Log.d(TAG, "picking.getImgName() " + picking.getImgName());
 		ImageView imgPic = (ImageView)convertView.findViewById(R.id.imgPic);
-		if(picking.getImgName()!=null && !"".equals(picking.getImgName())){
-			imgPic.setImageURI(Uri.fromFile(new File(ImageUtil.getMediaStorageDir() + "/" + picking.getImgName())));
-		}
-		else{
-			imgPic.setImageResource(R.drawable.no_image);
-		}
+		ImageUtil.setImageToImageView(imgPic, picking.getImgName());
 		
 		convertView.setOnClickListener(this);
 		convertView.setOnLongClickListener(this);
@@ -134,6 +130,7 @@ public class PickingAdapter extends BaseAdapter implements OnClickListener,
 				.findViewById(R.id.ident)).getText().toString());
 		pickings.remove(entry);
 		pickingHelper.logicalDelete(entry.getPickingId());
+		ImageUtil.deletePickingImage(entry);
 		Toast.makeText(context, "Deleted!", Toast.LENGTH_LONG)
 				.show();
 		notifyDataSetChanged();

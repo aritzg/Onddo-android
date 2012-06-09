@@ -1,6 +1,7 @@
 package net.sareweb.android.onddo.activity;
 
 import net.sareweb.android.onddo.R;
+import net.sareweb.android.onddo.manager.AppManager;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import net.sareweb.lifedroid.manager.UserManager;
 import net.sareweb.lifedroid.model.User;
@@ -48,6 +49,9 @@ public class LogInActivity extends Activity {
 			editor.putString(OnddoConstants.USER_PREFS_EMAIL_ADDRESS, user.getEmailAddress());
 			editor.putString(OnddoConstants.USER_PREFS_PASS, txPass.getText().toString());
 			editor.commit();
+			
+			appManager.synchronize(user.getUserId(), this);
+			
 			validateResult(LOG_IN_OK);
 		}
 		else{
@@ -87,6 +91,8 @@ public class LogInActivity extends Activity {
 	
 	@Bean
 	UserManager userManager;
+	@Bean
+	AppManager appManager;
 	private ProgressDialog dialog;
 	private SharedPreferences userPrefs;
 	private static String TAG = "LogInActivity";

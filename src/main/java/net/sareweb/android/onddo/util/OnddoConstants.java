@@ -14,6 +14,13 @@ public class OnddoConstants {
 	public static final String PARAM_EMAIL_ADDRESS = "param_email_address";
 	public static final String PARAM_PICKING_ID = "param_picking_id";
 	
+
+	
+	public static final String ONDDO_PROTOCOL = "http";
+	public static final String ONDDO_SERVER = "www.sareweb.net";
+	public static final String ONDDO_PORT = "9080";
+	
+	
 	public static final String DEFAULT_USER = "test@liferay.com";
 	public static final String DEFAULT_PASS = "test";
 	

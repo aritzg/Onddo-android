@@ -185,9 +185,8 @@ public class PickingEditActivity extends Activity implements LocationListener, O
 		if(!p.getWeather().equals("")){
 			imgWeather.setImageResource(WeatherUtil.getWeatherDialogOptionsMap().get(p.getWeather()).getImgResId());
 		}
-		if(p.getImgName()!=null && !p.getImgName().equals("")){
-			imgPic.setImageURI(Uri.fromFile(new File(ImageUtil.getMediaStorageDir() + "/" + p.getImgName())));
-		}
+		
+		ImageUtil.setImageToImageView(imgPic, p.getImgName());
 		
 		if(p.getHumidity()!=null){
 			sbHumidity.setProgress(p.getHumidity().intValue());

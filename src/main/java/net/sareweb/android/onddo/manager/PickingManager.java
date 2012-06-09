@@ -82,7 +82,9 @@ public class PickingManager {
 		for (Picking picking: pickingsToBeDeleted) {
 			Log.d(TAG, "Deleting picking " + picking.getPickingId());
 			if(picking.getObjectStatus()!=null && picking.getObjectStatus().equals(LDSQLiteHelper.OBJECT_STATUS_DELETED_REMOTE)){
+				fileRs.deleteFileEntry(picking.getImgId().toString());
 				pRs.deletePickingById(String.valueOf(picking.getPickingId()));
+				
 			}
 			pickingHelper.delete(picking.getPickingId());
 		}
@@ -117,6 +119,7 @@ public class PickingManager {
 				try {
 					picking.setObjectStatus(LDSQLiteHelper.OBJECT_STATUS_SYNCH);
 					pickingHelper.persist(picking);
+					ImageUtil.downloadImage(picking);
 				} catch (IntrospectionException e) {
 					Log.e(TAG,"Error persisting retrieved picking");
 				}

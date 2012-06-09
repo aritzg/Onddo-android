@@ -3,27 +3,24 @@ package net.sareweb.android.onddo.util;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-
+import net.sareweb.android.onddo.R;
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.lifedroid.model.DLFileEntry;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
+import android.widget.ImageView;
 
 public class ImageUtil {
 
@@ -144,7 +141,64 @@ public class ImageUtil {
 				entry.delete();
 			}
 		}
-	}	
+	}
+	
+	public static void deletePickingImage(Picking p) {
+		String imageName = p.getImgName();
+		if(imageName==null || "".equals(imageName))return;
+		File image = new File(ImageUtil.getMediaStorageDir() + "/" + imageName);
+		if(image.exists()){
+			image.delete();
+		}
+	}
+	
+	public static void downloadImage(Picking p) {
+		String imageName = p.getImgName();
+		if(imageName==null || "".equals(imageName))return;
+		
+		try {
+			URL url = 
+					new URL(OnddoConstants.ONDDO_PROTOCOL 
+							+ "://" + OnddoConstants.ONDDO_SERVER 
+							+ ":" + OnddoConstants.ONDDO_PORT
+							+ "/documents/"+ OnddoConstants.IMAGE_REPOSITORY 
+							+ "/" + OnddoConstants.IMAGE_FOLDER 
+							+ "/" + p.getImgName());
+			
+			HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+			urlConnection.setRequestMethod("GET");
+	        urlConnection.setDoOutput(true);
+	        urlConnection.setRequestProperty("Content-Type", "application/octet-stream");
+	        
+	        File onddoRoot = new File(getMediaStorageDir());
+	        File image = new File(onddoRoot,p.getImgName());
+	        FileOutputStream fileOutput = new FileOutputStream(image);
+	        
+	        InputStream inputStream = urlConnection.getInputStream();
+	        
+	        byte[] buffer = new byte[1024];
+	        int bufferLength = 0; 
+	        
+	        while ( (bufferLength = inputStream.read(buffer)) > 0 ) {
+                fileOutput.write(buffer, 0, bufferLength);
+	        }
+	        fileOutput.close();
+	        
+		} catch (Exception e) {
+			Log.e(TAG, "Error downloading image",e);
+		}
+		
+	}
+	
+	public static void setImageToImageView(ImageView imageView, String imageName){
+		if(imageName==null || "".equals(imageName))return;
+		File image = new File(ImageUtil.getMediaStorageDir() + "/" + imageName);
+		if(image.exists()){
+			imageView.setImageURI(Uri.fromFile(image));
+		}else{
+			imageView.setImageResource(R.drawable.no_image);
+		}
+	}
 
 	private static String TAG = "ImageUtil";
 
