@@ -67,7 +67,7 @@ public class PickingManager {
 		if(usersPickings == null) return ;
 		for (Picking picking: usersPickings) {
 			Log.d(TAG, "\tStatus " + picking.getObjectStatus());
-			if(picking.getObjectStatus()!=null && picking.getObjectStatus().equals(LDSQLiteHelper.OBJECT_STATUS_DIRTY)){
+			if(picking.getObjectStatus().equals(LDSQLiteHelper.OBJECT_STATUS_DIRTY) || picking.getObjectStatus().equals(PickingOpenHelper.OBJECT_STATUS_DIRTY_IMAGE)){
 				pickingsToBeUpdated.add(picking);
 			}
 			else if(picking.getObjectStatus()!=null && picking.getObjectStatus().equals(LDSQLiteHelper.OBJECT_STATUS_NEW)){
@@ -93,6 +93,11 @@ public class PickingManager {
 	private void updatePickings() {
 		for (Picking picking: pickingsToBeUpdated) {
 			Log.d(TAG, "Updating picking " + picking.getPickingId());
+			if(picking.getObjectStatus().equals(PickingOpenHelper.OBJECT_STATUS_DIRTY_IMAGE)){
+				Log.d(TAG, "This new picking needs to upload image");
+				DLFileEntry image = fileRs.addFileEntry(ImageUtil.composeDLFileEntry(picking), ImageUtil.getMediaStorageDir());
+				picking.setImgId(image.getFileEntryId());
+			}
 			pRs.updatePicking(picking);
 			pickingHelper.delete(picking.getPickingId());
 		}

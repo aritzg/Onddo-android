@@ -172,7 +172,6 @@ public class PickingEditActivity extends Activity implements LocationListener, O
 		p.setType(txType.getText().toString());
 		p.setHumidity(new Double(sbHumidity.getProgress()));
 		p.setTemperature(new Double(sbTemperature.getProgress()));
-		//
 	}
 	
 	private void populateFields(Picking p) {
@@ -221,6 +220,10 @@ public class PickingEditActivity extends Activity implements LocationListener, O
 	        	ImageUtil.resizeFile(image);
 	        	imgPic.setImageURI(Uri.fromFile(new File(imagePath)));
 	        	p.setImgName(image.getName());
+	        	//if it is not NEW, we need to denote it is more than DIRTY (Because image changed)
+	        	if(!p.getObjectStatus().equals(LDSQLiteHelper.OBJECT_STATUS_NEW)){
+	        		p.setObjectStatus(PickingOpenHelper.OBJECT_STATUS_DIRTY_IMAGE);
+	        	}
 	        	
 	        } else if (resultCode == RESULT_CANCELED) {
 	            // User cancelled the image capture
@@ -241,6 +244,10 @@ public class PickingEditActivity extends Activity implements LocationListener, O
 					
 					imgPic.setImageURI(targetUri);
 					p.setImgName(dest.getName());
+					//if it is not NEW, we need to denote it is more than DIRTY (Because image changed)
+		        	if(!p.getObjectStatus().equals(LDSQLiteHelper.OBJECT_STATUS_NEW)){
+		        		p.setObjectStatus(PickingOpenHelper.OBJECT_STATUS_DIRTY_IMAGE);
+		        	}
 				} 
 	        	catch (IOException e) {
 	        		Log.e(TAG, "Error copying file", e);

@@ -32,4 +32,6 @@ public class PickingOpenHelper extends LDSQLiteHelper<Picking> {
 		return query("userId=?", selectionArgs);
 	}
 	
+	public static final String OBJECT_STATUS_DIRTY_IMAGE ="DIRTY_IMAGE";
+	
 }
