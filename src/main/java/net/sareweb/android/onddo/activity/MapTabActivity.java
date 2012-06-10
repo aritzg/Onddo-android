@@ -39,20 +39,26 @@ public class MapTabActivity extends MapActivity {
 	    createOverlays(userId);
 	}
 	
-	private void createOverlays(long userId){
+	private void createOverlays(long userId) {
 		PickingOpenHelper pickingHelper = new PickingOpenHelper(this);
 
-		List<Picking> pickings =  pickingHelper.getByUserId(userId);
-		
-		if(pickings==null || pickings.size()<1) return;
-		
-		for(Picking p : pickings){
+		List<Picking> pickings = pickingHelper.getByUserId(userId);
+
+		if (pickings == null || pickings.size() < 1)
+			return;
+
+		for (Picking p : pickings) {
+
 			Double lat = p.getLat() * 1000000;
 			Double lng = p.getLng() * 1000000;
-			GeoPoint point = new GeoPoint(lat.intValue(),lng.intValue());
-			PickingOverlayItem overlayitem = new PickingOverlayItem(point, p.getType(), "", p);
-		    itemizedoverlay.addOverlay(overlayitem);
-		    mapOverlays.add(itemizedoverlay);
+
+			if (lat.intValue() != 0 && lng.intValue() != 0) {
+				GeoPoint point = new GeoPoint(lat.intValue(), lng.intValue());
+				PickingOverlayItem overlayitem = new PickingOverlayItem(point,
+						p.getType(), "", p);
+				itemizedoverlay.addOverlay(overlayitem);
+				mapOverlays.add(itemizedoverlay);
+			}
 		}
 	}
 

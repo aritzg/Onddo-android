@@ -30,7 +30,7 @@ public class ImageUtil {
 			BitmapFactory.Options o = new BitmapFactory.Options();
 			o.inJustDecodeBounds = true;
 			BitmapFactory.decodeStream(new FileInputStream(f), null, o);
-			final int REQUIRED_SIZE = 70;
+			final int REQUIRED_SIZE = 200;
 			int scale = 1;
 			while (o.outWidth / scale / 2 >= REQUIRED_SIZE
 					&& o.outHeight / scale / 2 >= REQUIRED_SIZE)
