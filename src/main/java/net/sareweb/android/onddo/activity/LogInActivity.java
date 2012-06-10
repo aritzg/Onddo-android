@@ -2,6 +2,7 @@ package net.sareweb.android.onddo.activity;
 
 import net.sareweb.android.onddo.R;
 import net.sareweb.android.onddo.manager.AppManager;
+import net.sareweb.android.onddo.util.ConnectionUtil;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import net.sareweb.lifedroid.manager.UserManager;
 import net.sareweb.lifedroid.model.User;
@@ -34,9 +35,14 @@ public class LogInActivity extends Activity {
 
 	@Click(R.id.btnLogIn)
 	void clickBtnLogIn() {
-		dialog = ProgressDialog.show(this, "", "Loging in...", true);
-		dialog.show();
-		validateUser(txEmail.getText().toString(), txPass.getText().toString());
+		if(ConnectionUtil.isOnline(this)){
+			dialog = ProgressDialog.show(this, "", "Loging in...", true);
+			dialog.show();
+			validateUser(txEmail.getText().toString(), txPass.getText().toString());
+		}
+		else{
+			Toast.makeText(this, "Sorry.No internet access available.", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	@Background

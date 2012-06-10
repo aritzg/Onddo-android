@@ -2,6 +2,7 @@ package net.sareweb.android.onddo.activity;
 
 import net.sareweb.android.onddo.R;
 import net.sareweb.android.onddo.manager.AppManager;
+import net.sareweb.android.onddo.util.ConnectionUtil;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
@@ -56,9 +57,14 @@ public class OnddoMainActivity extends TabActivity {
 
 	@OptionsItem(R.id.itemSynch)
 	void itemSynch() {
-		dialog = ProgressDialog.show(this, "", "Synchronizing...", true);
-		dialog.show();
-		manualSynch();
+		if(ConnectionUtil.isOnline(this)){
+			dialog = ProgressDialog.show(this, "", "Synchronizing...", true);
+			dialog.show();
+			manualSynch();
+		}
+		else{
+			Toast.makeText(this, "Sorry.No internet access available.", Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 	@OptionsItem(R.id.itemSettings)

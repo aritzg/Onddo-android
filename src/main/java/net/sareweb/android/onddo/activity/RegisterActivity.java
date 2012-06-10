@@ -1,6 +1,7 @@
 package net.sareweb.android.onddo.activity;
 
 import net.sareweb.android.onddo.R;
+import net.sareweb.android.onddo.util.ConnectionUtil;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import net.sareweb.lifedroid.liferay.service.UserRESTService;
 import net.sareweb.lifedroid.model.User;
@@ -33,10 +34,15 @@ public class RegisterActivity extends Activity {
 	
 	@Click(R.id.btnRegister)
 	void clickBtnRegister(){
-		if(validateRegisterForm()){
-			dialog = ProgressDialog.show(this, "", "Registering user.", true);
-			dialog.show();
-			createUser(txName.getText().toString(), txSurname.getText().toString(), txEmail.getText().toString(), txPass.getText().toString());
+		if(ConnectionUtil.isOnline(this)){
+			if(validateRegisterForm()){
+				dialog = ProgressDialog.show(this, "", "Registering user.", true);
+				dialog.show();
+				createUser(txName.getText().toString(), txSurname.getText().toString(), txEmail.getText().toString(), txPass.getText().toString());
+			}
+		}
+		else{
+			Toast.makeText(this, "Sorry.No internet access available.", Toast.LENGTH_SHORT).show();
 		}
 	}
 	
