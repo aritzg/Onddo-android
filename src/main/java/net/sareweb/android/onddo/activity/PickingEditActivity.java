@@ -133,6 +133,11 @@ public class PickingEditActivity extends Activity implements LocationListener, O
 			   startActivityForResult(intent, GET_IMG_FROM_GALLERY_ACTIVITY_REQUEST_CODE);
 	}
 
+	@Click(R.id.imgPic)
+	void clickImage(){
+		PickingViewActivity_.intent(this).imageName(p.getImgName()).start();
+	}
+
 	
 	private void retrievePricking(){
 		p = pickingHelper.getById(pickingId);

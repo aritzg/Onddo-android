@@ -30,7 +30,7 @@ public class UserSettingsActivity extends Activity {
 	@Click(R.id.btnReset)
 	void resetOnddo(){
 		appManager.localReset(this);
-		StartActivity_.intent(this).flags(Intent.FLAG_ACTIVITY_CLEAR_TOP).start();
+		finish();
 	}
 	
 	@Bean

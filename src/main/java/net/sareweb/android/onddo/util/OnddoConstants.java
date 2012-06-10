@@ -13,6 +13,7 @@ public class OnddoConstants {
 	
 	public static final String PARAM_EMAIL_ADDRESS = "param_email_address";
 	public static final String PARAM_PICKING_ID = "param_picking_id";
+	public static final String PARAM_IMAGE_NAME = "param_image_name";
 	
 
 	
