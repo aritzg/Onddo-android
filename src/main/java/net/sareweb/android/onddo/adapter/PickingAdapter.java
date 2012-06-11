@@ -11,6 +11,8 @@ import net.sareweb.android.onddo.activity.PickingEditActivity_;
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.android.onddo.sqlite.PickingOpenHelper;
 import net.sareweb.android.onddo.util.ImageUtil;
+import net.sareweb.android.onddo.util.MoonUtil;
+import net.sareweb.android.onddo.util.WeatherUtil;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -75,6 +77,22 @@ public class PickingAdapter extends BaseAdapter implements OnClickListener,
 		Date tmpDate = new Date();
 		if(picking.getCreateDate()!=null)tmpDate = new Date(picking.getCreateDate());
 		date.setText(sdf.format(tmpDate));
+		
+		TextView temperature = (TextView) convertView.findViewById(R.id.temperature);
+		temperature.setText("T: " + picking.getTemperature() + "ºC");
+		
+		TextView humidity = (TextView) convertView.findViewById(R.id.humidity);
+		humidity.setText("H: " + picking.getHumidity() +"%");
+		
+		if(!picking.getMoonPhase().equals("")){
+			ImageView imgMoon = (ImageView) convertView.findViewById(R.id.imgMoon);
+			imgMoon.setImageResource(MoonUtil.getMoonDialogOptionsMap().get(picking.getMoonPhase()).getImgResId());
+		}
+		if(!picking.getWeather().equals("")){
+			ImageView imgWeather = (ImageView) convertView.findViewById(R.id.imgWeather);
+			imgWeather.setImageResource(WeatherUtil.getWeatherDialogOptionsMap().get(picking.getWeather()).getImgResId());
+		}
+		
 		
 		Log.d(TAG, "picking.getImgName() " + picking.getImgName());
 		ImageView imgPic = (ImageView)convertView.findViewById(R.id.imgPic);
