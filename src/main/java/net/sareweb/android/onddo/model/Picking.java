@@ -44,6 +44,9 @@ public class Picking extends LDObject {
 	@LDField(sqliteType=LDField.SQLITE_TYPE_INTEGER)
 	private Long imgId;
 	
+	@LDField(sqliteType=LDField.SQLITE_TYPE_BOOLEAN)
+	private Boolean visible=true;
+	
 	@LDField
 	private String imgName = "";
 
@@ -158,5 +161,14 @@ public class Picking extends LDObject {
 	public void setImgName(String imgName) {
 		this.imgName = imgName;
 	}
+
+	public Boolean getVisible() {
+		return visible;
+	}
+
+	public void setVisible(Boolean visible) {
+		this.visible = visible;
+	}
+	
 	
 }

@@ -44,7 +44,8 @@ public class PickingRESTService extends LDRESTService<Picking> {
 		requestURL = addParamToRequestURL(requestURL, "weather", picking.getWeather());
 		requestURL = addParamToRequestURL(requestURL, "temperature", picking.getTemperature());
 		requestURL = addParamToRequestURL(requestURL, "humidity", picking.getHumidity());
-		requestURL = addParamToRequestURL(requestURL, "imgId","11111");
+		requestURL = addParamToRequestURL(requestURL, "imgId",picking.getImgId());
+		requestURL = addParamToRequestURL(requestURL, "visible",picking.getVisible().toString());
 		encodedText ="";
 		try {
 			encodedText = URLEncoder.encode(picking.getImgName(), "UTF-8");
@@ -77,6 +78,7 @@ public class PickingRESTService extends LDRESTService<Picking> {
 		requestURL = addParamToRequestURL(requestURL, "temperature", picking.getTemperature());
 		requestURL = addParamToRequestURL(requestURL, "humidity", picking.getHumidity());
 		requestURL = addParamToRequestURL(requestURL, "imgId",picking.getImgId());
+		requestURL = addParamToRequestURL(requestURL, "visible",picking.getVisible().toString());
 		encodedText ="";
 		try {
 			encodedText = URLEncoder.encode(picking.getImgName(), "UTF-8");

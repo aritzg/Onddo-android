@@ -3,7 +3,7 @@ package net.sareweb.android.onddo.util;
 public class OnddoConstants {
 	
 	public static final String DB_NAME="Onddo";
-	public static final int DB_VERSION=6;
+	public static final int DB_VERSION=7;
 	
 	public static final String USER_PREFS = "userPrefs";
 	public static final String USER_PREFS_EMAIL_ADDRESS = "user_prefs_email_address";

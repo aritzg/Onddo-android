@@ -92,9 +92,7 @@ public class PickingAdapter extends BaseAdapter implements OnClickListener,
 			ImageView imgWeather = (ImageView) convertView.findViewById(R.id.imgWeather);
 			imgWeather.setImageResource(WeatherUtil.getWeatherDialogOptionsMap().get(picking.getWeather()).getImgResId());
 		}
-		
-		
-		Log.d(TAG, "picking.getImgName() " + picking.getImgName());
+
 		ImageView imgPic = (ImageView)convertView.findViewById(R.id.imgPic);
 		ImageUtil.setImageToImageView(imgPic, picking.getImgName());
 		
