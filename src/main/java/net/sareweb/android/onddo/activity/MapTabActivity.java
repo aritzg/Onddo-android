@@ -30,7 +30,19 @@ public class MapTabActivity extends MapActivity {
 	    mapView.setBuiltInZoomControls(true);
 	    
 	    mapOverlays = mapView.getOverlays();
-	    Drawable drawable = this.getResources().getDrawable(R.drawable.pin);
+	    loadPickingsInMap();
+	}
+	
+	
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		loadPickingsInMap();
+	}
+	
+	private void loadPickingsInMap(){
+		Drawable drawable = this.getResources().getDrawable(R.drawable.pin);
 	    itemizedoverlay = new PickingItemizedOverlay(drawable, this);
 	    
 	    SharedPreferences userPrefs = getSharedPreferences(OnddoConstants.USER_PREFS, MODE_PRIVATE);
@@ -38,7 +50,9 @@ public class MapTabActivity extends MapActivity {
 	    
 	    createOverlays(userId);
 	}
-	
+
+
+
 	private void createOverlays(long userId) {
 		PickingOpenHelper pickingHelper = new PickingOpenHelper(this);
 
@@ -46,7 +60,7 @@ public class MapTabActivity extends MapActivity {
 
 		if (pickings == null || pickings.size() < 1)
 			return;
-
+		mapOverlays.clear();
 		for (Picking p : pickings) {
 
 			Double lat = p.getLat() * 1000000;

@@ -8,8 +8,10 @@ import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -27,28 +29,30 @@ public class OnddoMainActivity extends TabActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.onddo_main);
-		userPrefs = getSharedPreferences(OnddoConstants.USER_PREFS, MODE_PRIVATE);
-		
+		userPrefs = getSharedPreferences(OnddoConstants.USER_PREFS,
+				MODE_PRIVATE);
+
 		Resources res = getResources();
 		tabHost = getTabHost();
-	    TabHost.TabSpec spec;
-		
-		spec = tabHost.newTabSpec("pickings").setIndicator("Pickings",
-                res.getDrawable(R.drawable.ic_tab_pickings))
-            .setContent(PickingsTabActivity_.intent(this). get());
+		TabHost.TabSpec spec;
+
+		spec = tabHost
+				.newTabSpec("pickings")
+				.setIndicator("Pickings",
+						res.getDrawable(R.drawable.ic_tab_pickings))
+				.setContent(PickingsTabActivity_.intent(this).get());
 		tabHost.addTab(spec);
-		
+
 		Intent mapIntent = new Intent().setClass(this, MapTabActivity.class);
-		spec = tabHost.newTabSpec("map").setIndicator("Map",
-                res.getDrawable(R.drawable.ic_tab_map))
-            .setContent(mapIntent);
+		spec = tabHost.newTabSpec("map")
+				.setIndicator("Map", res.getDrawable(R.drawable.ic_tab_map))
+				.setContent(mapIntent);
 		tabHost.addTab(spec);
-		
+
 		tabHost.setCurrentTab(0);
 	}
-	
 
 	@OptionsItem(R.id.itemAdd)
 	void itemAdd() {
@@ -57,16 +61,16 @@ public class OnddoMainActivity extends TabActivity {
 
 	@OptionsItem(R.id.itemSynch)
 	void itemSynch() {
-		if(ConnectionUtil.isOnline(this)){
+		if (ConnectionUtil.isOnline(this)) {
 			dialog = ProgressDialog.show(this, "", "Synchronizing...", true);
 			dialog.show();
 			manualSynch();
-		}
-		else{
-			Toast.makeText(this, "Sorry.No internet access available.", Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(this, "Sorry.No internet access available.",
+					Toast.LENGTH_SHORT).show();
 		}
 	}
-	
+
 	@OptionsItem(R.id.itemSettings)
 	void itemSettings() {
 		UserSettingsActivity_.intent(this).start();
@@ -74,39 +78,50 @@ public class OnddoMainActivity extends TabActivity {
 
 	@Background
 	void manualSynch() {
+		enabledConfigChages=false;
 		appManager.synchronize(
 				userPrefs.getLong(OnddoConstants.USER_PREFS_USER_ID, 0), this);
 		finishedBackgroundThread(BG_RESULT_SYNCH_OK);
 	}
-	 
+
 	@UiThread
 	void finishedBackgroundThread(int result) {
 		switch (result) {
 		case BG_RESULT_SYNCH_OK:
 			dialog.cancel();
 			Toast.makeText(this, "Synch done!", Toast.LENGTH_SHORT).show();
-			startActivity(getIntent()); 
+			startActivity(getIntent());
 			finish();
 			break;
 
 		default:
 			break;
 		}
+		enabledConfigChages=true;
 	}
-	 
-	 @OptionsItem(R.id.itemExit)
-	 void itemExit(){
-		 userPrefs.edit().clear().commit();
-		 finish();
-		 StartActivity_.intent(this).start();
-	 }
-	 
-	 SharedPreferences userPrefs;
-	 TabHost tabHost;
-	 private static String TAG = "OnddoMainActivity";
-	 @Bean
-	 AppManager appManager;
-	 private ProgressDialog dialog;
-	 private final int BG_RESULT_SYNCH_OK=0;
 
+	@OptionsItem(R.id.itemExit)
+	void itemExit() {
+		userPrefs.edit().clear().commit();
+		finish();
+		StartActivity_.intent(this).start();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		Log.d(TAG,  "Config has been changed");
+		if(enabledConfigChages)
+			super.onConfigurationChanged(newConfig);
+	}
+
+	@Bean
+	AppManager appManager;
+	
+	SharedPreferences userPrefs;
+	TabHost tabHost;
+	
+	private boolean enabledConfigChages = true;
+	private ProgressDialog dialog;
+	private final int BG_RESULT_SYNCH_OK = 0;
+	private static String TAG = "OnddoMainActivity";
 }

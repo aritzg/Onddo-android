@@ -191,12 +191,17 @@ public class ImageUtil {
 	}
 	
 	public static void setImageToImageView(ImageView imageView, String imageName){
-		if(imageName==null || "".equals(imageName))return;
-		File image = new File(ImageUtil.getMediaStorageDir() + "/" + imageName);
-		if(image.exists()){
-			imageView.setImageURI(Uri.fromFile(image));
-		}else{
+		if(imageName==null || "".equals(imageName)){
 			imageView.setImageResource(R.drawable.no_image);
+		}
+		else {
+			File image = new File(ImageUtil.getMediaStorageDir() + "/" + imageName);
+			
+			if(image.exists()){
+				imageView.setImageURI(Uri.fromFile(image));
+			}else{
+				imageView.setImageResource(R.drawable.no_image);
+			}
 		}
 	}
 

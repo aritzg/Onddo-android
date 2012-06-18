@@ -34,7 +34,7 @@ public class UserSettingsActivity extends Activity {
 	}
 	
 	@Bean
-	 AppManager appManager;
+	AppManager appManager;
 	
 	private static String TAG = "UserSettingsActivity";
 
