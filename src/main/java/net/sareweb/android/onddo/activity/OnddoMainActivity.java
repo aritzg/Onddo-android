@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -78,7 +79,7 @@ public class OnddoMainActivity extends TabActivity {
 
 	@Background
 	void manualSynch() {
-		enabledConfigChages=false;
+		mLockScreenRotation();
 		appManager.synchronize(
 				userPrefs.getLong(OnddoConstants.USER_PREFS_USER_ID, 0), this);
 		finishedBackgroundThread(BG_RESULT_SYNCH_OK);
@@ -97,7 +98,7 @@ public class OnddoMainActivity extends TabActivity {
 		default:
 			break;
 		}
-		enabledConfigChages=true;
+		mUnlockScreenRotation();
 	}
 
 	@OptionsItem(R.id.itemExit)
@@ -106,12 +107,28 @@ public class OnddoMainActivity extends TabActivity {
 		finish();
 		StartActivity_.intent(this).start();
 	}
+	
+	private void mLockScreenRotation()
+	{
+	  // Stop the screen orientation changing during an event
+	    switch (this.getResources().getConfiguration().orientation)
+	    {
+	  case Configuration.ORIENTATION_PORTRAIT:
+	    this.setRequestedOrientation(
+	ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+	    break;
+	  case Configuration.ORIENTATION_LANDSCAPE:
+	    this.setRequestedOrientation(
+	ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+	    break;
+	    }
+	}
+	
+	private void mUnlockScreenRotation()
+	{
+		this.setRequestedOrientation(
+				ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		Log.d(TAG,  "Config has been changed");
-		if(enabledConfigChages)
-			super.onConfigurationChanged(newConfig);
 	}
 
 	@Bean
@@ -120,7 +137,6 @@ public class OnddoMainActivity extends TabActivity {
 	SharedPreferences userPrefs;
 	TabHost tabHost;
 	
-	private boolean enabledConfigChages = true;
 	private ProgressDialog dialog;
 	private final int BG_RESULT_SYNCH_OK = 0;
 	private static String TAG = "OnddoMainActivity";

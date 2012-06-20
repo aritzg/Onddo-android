@@ -14,10 +14,13 @@ import java.util.Date;
 import net.sareweb.android.onddo.R;
 import net.sareweb.android.onddo.model.Picking;
 import net.sareweb.lifedroid.model.DLFileEntry;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore.Images;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
@@ -198,12 +201,14 @@ public class ImageUtil {
 			File image = new File(ImageUtil.getMediaStorageDir() + "/" + imageName);
 			
 			if(image.exists()){
-				imageView.setImageURI(Uri.fromFile(image));
+				Uri fileUri = Uri.fromFile(image);
+				imageView.setImageURI(fileUri);
 			}else{
 				imageView.setImageResource(R.drawable.no_image);
 			}
 		}
 	}
+	
 
 	private static String TAG = "ImageUtil";
 

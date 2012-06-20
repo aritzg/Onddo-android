@@ -9,6 +9,7 @@ import net.sareweb.android.onddo.sqlite.PickingOpenHelper;
 import net.sareweb.android.onddo.util.OnddoConstants;
 import android.app.ListActivity;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -43,7 +44,6 @@ public class PickingsTabActivity extends ListActivity {
 		adapter.updateList(pickings);
 		super.onResume();
 	}
-	
 	
 	SharedPreferences userPrefs;
 	long userId;
